@@ -52,15 +52,15 @@ public class AsyncConfiguration {
         return executor;
     }
 
-    @Bean("ipCheckPool")
-    public Executor ipCheckPool() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(5);
-        executor.setQueueCapacity(500);
-        executor.setKeepAliveSeconds(60);
-        executor.setThreadNamePrefix("ipCheckPool-");
-        executor.initialize();
-        return executor;
-    }
+//    @Bean("ipCheckPool")
+//    public Executor ipCheckPool() {
+//        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+//        executor.setCorePoolSize(2);
+//        executor.setMaxPoolSize(5);
+//        executor.setQueueCapacity(500);
+//        executor.setKeepAliveSeconds(60);
+//        executor.setThreadNamePrefix("ipCheckPool-");
+//        executor.initialize();
+//        return executor;
+//    }
 }

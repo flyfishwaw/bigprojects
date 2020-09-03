@@ -1,10 +1,12 @@
 package com.waw.ipservice.domain;
 
+import com.waw.ipservice.utils.DateUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -37,7 +39,7 @@ public class ForbiddenIp implements Serializable {
      * 被禁时间
      */
     @ApiModelProperty(value = "被禁时间")
-    private Date forbiddenTime = new Date();
+    private String forbiddenTime = DateUtil.formatDate(new Date());
 
     /**
      * 被禁网站
@@ -53,6 +55,19 @@ public class ForbiddenIp implements Serializable {
     public ForbiddenIp(String ip, String website) {
         this.ip = ip;
         this.website = website;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ForbiddenIp forbiddenIp = (ForbiddenIp) o;
+        return ip.equals(forbiddenIp.ip);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ip);
     }
 }
 

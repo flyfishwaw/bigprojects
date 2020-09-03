@@ -31,6 +31,7 @@ public class NotUseIpCheckTask {
 
     @Async("notUseIpPool")
     public void check() {
+        System.out.println(Thread.currentThread().getName());
         if (ipList == null) {
             ipList = notUseIpDao.findAll();
         }
@@ -44,13 +45,18 @@ public class NotUseIpCheckTask {
             nowIndex++;
             ip = notUseIp.getIp();
             id = notUseIp.getId();
-            checkResult = IpUtil.getIpProtocol(ip);
-            if (checkResult >= 0) {
-                checkedIp = new CheckedIp(ip, checkResult, notUseIp.getWebsite());
-                checkedIpDao.save(checkedIp);
-                notUseIpDao.deleteById(id);
-            } else {
-                notUseIpDao.updateCheckTimeById(id);
+            try {
+                checkResult = IpUtil.getIpProtocol(ip);
+                if (checkResult >= 0) {
+                    checkedIp = new CheckedIp(ip, checkResult, notUseIp.getWebsite());
+                    checkedIpDao.save(checkedIp);
+                    notUseIpDao.deleteById(id);
+                } else {
+                    notUseIpDao.updateCheckTimeById(id);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getStackTrace());
+                continue;
             }
 
         }

@@ -1,15 +1,19 @@
 package com.waw.ipservice.domain;
 
+import com.waw.ipservice.utils.DateUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
@@ -59,7 +63,7 @@ public class CheckedIp implements Serializable {
      * 添加时间
      */
     @ApiModelProperty(value = "添加时间")
-    private Date addTime = new Date();
+    private String addTime = DateUtil.formatDate(new Date());
 
     private static final long serialVersionUID = 1L;
 
@@ -70,6 +74,19 @@ public class CheckedIp implements Serializable {
         this.ip = ip;
         this.protocol = protocol;
         this.website = website;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CheckedIp checkedIp = (CheckedIp) o;
+        return ip.equals(checkedIp.ip);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ip);
     }
 }
 

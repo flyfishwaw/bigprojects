@@ -1,10 +1,12 @@
 package com.waw.ipservice.domain;
 
+import com.waw.ipservice.utils.DateUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -37,12 +39,12 @@ public class NotUseIp implements Serializable {
      * 添加时间
      */
     @ApiModelProperty(value = "添加时间")
-    private Date addTime = new Date();
+    private String addTime = DateUtil.formatDate(new Date());
     /**
      * 上一次验证时间
      */
     @ApiModelProperty(value = "上一次验证时间")
-    private Date checkTime = new Date();
+    private String checkTime = DateUtil.formatDate(new Date());
     /**
      * 来源网站
      */
@@ -56,6 +58,19 @@ public class NotUseIp implements Serializable {
     public NotUseIp(String ip, String website) {
         this.ip = ip;
         this.website = website;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NotUseIp notUseIp = (NotUseIp) o;
+        return ip.equals(notUseIp.ip);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ip);
     }
 }
 

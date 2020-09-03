@@ -19,6 +19,6 @@ import javax.transaction.Transactional;
 public interface UncheckedIpDao extends JpaRepository<UncheckedIp, Long> {
     @Transactional
     @Modifying
-    @Query(value = "update unchecked_ip set check_time=now(),checked_times=checked_times+1 where id=?1", nativeQuery = true)
+    @Query(value = "update unchecked_ip set check_time=convert(char(20),getdate(),120 ),checked_times=checked_times+1 where id=?1", nativeQuery = true)
     public int updateCheckTimeById(long id);
 }

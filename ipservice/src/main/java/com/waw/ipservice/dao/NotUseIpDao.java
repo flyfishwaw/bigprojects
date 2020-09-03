@@ -18,6 +18,6 @@ import javax.transaction.Transactional;
 public interface NotUseIpDao extends JpaRepository<NotUseIp, Long> {
     @Transactional
     @Modifying
-    @Query(value = "update not_use_ip set check_time=now() where id=?1", nativeQuery = true)
+    @Query(value = "update not_use_ip set check_time=convert(char(20),getdate(),120 ) where id=?1", nativeQuery = true)
     public int updateCheckTimeById(Long id);
 }

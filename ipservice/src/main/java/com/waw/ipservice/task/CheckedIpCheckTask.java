@@ -27,6 +27,7 @@ public class CheckedIpCheckTask {
 
     @Async("checkedIpPool")
     public void check() {
+        System.out.println(Thread.currentThread().getName());
         if (ipList == null) {
             ipList = checkedIpDao.findAll();
         }
@@ -40,13 +41,18 @@ public class CheckedIpCheckTask {
             nowIndex++;
             id = checkedIp.getId();
             ip = checkedIp.getIp();
-            checkResult = IpUtil.getIpProtocol(ip);
-            if (checkResult >= 0) {
-                checkedIpDao.updateCheckTimeById(id);
-            } else {
-                uncheckedIp = new UncheckedIp(ip, checkedIp.getWebsite());
-                uncheckedIpDao.save(uncheckedIp);
-                checkedIpDao.deleteById(checkedIp.getId());
+            try {
+                checkResult = IpUtil.getIpProtocol(ip);
+                if (checkResult >= 0) {
+                    checkedIpDao.updateCheckTimeById(id);
+                } else {
+                    uncheckedIp = new UncheckedIp(ip, checkedIp.getWebsite());
+                    uncheckedIpDao.save(uncheckedIp);
+                    checkedIpDao.deleteById(checkedIp.getId());
+                }
+            } catch (Exception e) {
+                System.out.println(e.getStackTrace());
+                continue;
             }
 
         }

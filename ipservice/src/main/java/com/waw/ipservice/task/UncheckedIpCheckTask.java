@@ -1,5 +1,6 @@
 package com.waw.ipservice.task;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import com.waw.ipservice.config.IpCheckConfig;
 import com.waw.ipservice.dao.CheckedIpDao;
 import com.waw.ipservice.dao.NotUseIpDao;
@@ -36,6 +37,7 @@ public class UncheckedIpCheckTask {
 
     @Async("uncheckedIpPool")
     public void check() {
+        System.out.println(Thread.currentThread().getName());
         if (ipList == null) {
             ipList = uncheckedIpDao.findAll();
         }
@@ -52,20 +54,24 @@ public class UncheckedIpCheckTask {
             ip = uncheckedIp.getIp();
             id = uncheckedIp.getId();
             website = uncheckedIp.getWebsite();
-
-            checkResult = IpUtil.getIpProtocol(ip);
-            if (checkResult >= 0) {
-                checkedIp = new CheckedIp(ip, checkResult, website);
-                checkedIpDao.save(checkedIp);
-                uncheckedIpDao.deleteById(id);
-            } else {
-                if (uncheckedIp.getCheckedTimes() + 1 > ipCheckConfig.getTimes()) {
-                    notUseIp = new NotUseIp(ip, website);
-                    notUseIpDao.save(notUseIp);
+            try {
+                checkResult = IpUtil.getIpProtocol(ip);
+                if (checkResult >= 0) {
+                    checkedIp = new CheckedIp(ip, checkResult, website);
+                    checkedIpDao.save(checkedIp);
                     uncheckedIpDao.deleteById(id);
                 } else {
-                    uncheckedIpDao.updateCheckTimeById(id);
+                    if (uncheckedIp.getCheckedTimes() + 1 > ipCheckConfig.getTimes()) {
+                        notUseIp = new NotUseIp(ip, website);
+                        notUseIpDao.save(notUseIp);
+                        uncheckedIpDao.deleteById(id);
+                    } else {
+                        uncheckedIpDao.updateCheckTimeById(id);
+                    }
                 }
+            } catch (Exception e) {
+                System.out.println(e.getStackTrace());
+                continue;
             }
 
         }

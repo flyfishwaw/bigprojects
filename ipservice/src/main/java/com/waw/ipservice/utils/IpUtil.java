@@ -15,8 +15,8 @@ import java.net.Proxy;
  * @description
  */
 public class IpUtil {
-    @Autowired
-    private static IpCheckConfig ipCheckConfig;
+    //    @Autowired
+    private static IpCheckConfig ipCheckConfig = SpringContextUtil.getBean(IpCheckConfig.class);
 
     public static boolean isJustIp(String ip) {
         String[] datas = ip.split("\\.");//.是有意义的,所以要转义
