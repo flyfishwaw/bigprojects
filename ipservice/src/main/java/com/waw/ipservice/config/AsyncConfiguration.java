@@ -19,8 +19,8 @@ public class AsyncConfiguration {
     @Bean("uncheckedIpPool")
     public Executor uncheckedIpPool() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(20);
+        executor.setCorePoolSize(20);
+        executor.setMaxPoolSize(50);
         executor.setQueueCapacity(500);
         executor.setKeepAliveSeconds(60);
         executor.setThreadNamePrefix("uncheckedIpPool-");
@@ -31,8 +31,8 @@ public class AsyncConfiguration {
     @Bean("checkedIpPool")
     public Executor checkedIpPool() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(20);
+        executor.setCorePoolSize(20);
+        executor.setMaxPoolSize(50);
         executor.setQueueCapacity(500);
         executor.setKeepAliveSeconds(60);
         executor.setThreadNamePrefix("checkedIpPool-");

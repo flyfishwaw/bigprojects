@@ -1,16 +1,9 @@
 package com.waw.ipservice.run;
 
-import com.waw.ipservice.task.CheckedIpCheckTask;
-import com.waw.ipservice.task.NotUseIpCheckTask;
-import com.waw.ipservice.task.UncheckedIpCheckTask;
+import com.waw.ipservice.service.IpServie;
+import com.waw.ipservice.task.CanUseIpCheckTask;
+import com.waw.ipservice.task.NotCanUseIpCheckTask;
 import com.waw.ipservice.utils.SpringContextUtil;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 
 /**
  * @author flyfish
@@ -19,24 +12,19 @@ import org.springframework.stereotype.Component;
  */
 //@Component
 public class IpCheckClient {
-    //    @Autowired
-    UncheckedIpCheckTask uncheckedIpCheckTask;
-    //    @Autowired
-    NotUseIpCheckTask notUseIpCheckTask;
-    //    @Autowired
-    CheckedIpCheckTask checkedIpCheckTask;
 
     //    @Async("ipCheckPool")
     public void run() {
-        uncheckedIpCheckTask = SpringContextUtil.getBean("uncheckedIpCheckTask", UncheckedIpCheckTask.class);
-        notUseIpCheckTask = SpringContextUtil.getBean("notUseIpCheckTask", NotUseIpCheckTask.class);
-        checkedIpCheckTask = SpringContextUtil.getBean("checkedIpCheckTask", CheckedIpCheckTask.class);
+        NotCanUseIpCheckTask uncheckedIpCheckTask = SpringContextUtil.getBean("notCanUseIpCheckTask", NotCanUseIpCheckTask.class);
+        CanUseIpCheckTask checkedIpCheckTask = SpringContextUtil.getBean("canUseIpCheckTask", CanUseIpCheckTask.class);
+        IpServie ipServie = SpringContextUtil.getBean("ipServie", IpServie.class);
+
+        ipServie.clearCheckingIp();
         while (true) {
             uncheckedIpCheckTask.check();
-            notUseIpCheckTask.check();
             checkedIpCheckTask.check();
             try {
-                Thread.sleep(300000);
+                Thread.sleep(50000);
             } catch (InterruptedException e) {
 
             }
