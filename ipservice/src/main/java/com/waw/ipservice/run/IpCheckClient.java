@@ -24,7 +24,7 @@ public class IpCheckClient {
             uncheckedIpCheckTask.check();
             checkedIpCheckTask.check();
             try {
-                Thread.sleep(50000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
 
             }

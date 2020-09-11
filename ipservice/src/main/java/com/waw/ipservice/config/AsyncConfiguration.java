@@ -31,23 +31,11 @@ public class AsyncConfiguration {
     @Bean("checkedIpPool")
     public Executor checkedIpPool() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(20);
-        executor.setMaxPoolSize(50);
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(30);
         executor.setQueueCapacity(500);
         executor.setKeepAliveSeconds(60);
         executor.setThreadNamePrefix("checkedIpPool-");
-        executor.initialize();
-        return executor;
-    }
-
-    @Bean("notUseIpPool")
-    public Executor notUseIpPool() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(20);
-        executor.setQueueCapacity(500);
-        executor.setKeepAliveSeconds(60);
-        executor.setThreadNamePrefix("notUseIpPool-");
         executor.initialize();
         return executor;
     }
